@@ -63,14 +63,6 @@ Smart Route & Delivery Optimizer is an intelligent logistics platform that trans
 
 5. **Open your browser** and navigate to `http://localhost:8501`
 
-## 📷 Screenshots
-
-| | |
-|:-------------------------:|:-------------------------:|
-| **Route Optimization Interface**<br/>*Input addresses and select optimization parameters* | **Interactive Results Visualization**<br/>*Visualize optimal route with turn-by-turn directions* |
-| ![Interface Screenshot](https://via.placeholder.com/600x300?text=Optimization+Interface) | ![Results Screenshot](https://via.placeholder.com/600x300?text=Results+Visualization) |
-| **Algorithm Comparison**<br/>*Compare different algorithm performance* | **Export functionality**<br/>*Download routes in JSON format* |
-| ![Comparison Screenshot](https://via.placeholder.com/600x300?text=Algorithm+Comparison) | ![Export Screenshot](https://via.placeholder.com/600x300?text=Export+Functionality) |
 
 ## 💼 Use Cases & Applications
 
@@ -89,26 +81,16 @@ Smart Route & Delivery Optimizer is an intelligent logistics platform that trans
 - [ ] **API Microservices**: Containerized deployment with RESTful API endpoints
 - [ ] **Mobile Application**: React Native companion app for drivers
 
-## 🤝 Contributing
-
-We welcome contributions! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## 👨‍💻 Author
 
-**Your Name** - [GitHub](https://github.com/yourusername) | [LinkedIn](https://linkedin.com/in/yourprofile)
+**Kavyanjali Vijjana** - [GitHub](https://github.com/KavyanjaliVijjana) | [LinkedIn](https://www.linkedin.com/in/kavyanjali-vijjana/)
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?logo=github&logoColor=white)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?logo=github&logoColor=white)](https://github.com/KavyanjaliVijjana)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kavyanjali-vijjana/)
 
 ---
 
