@@ -179,12 +179,18 @@ st.markdown("""
         background-color: #F5F9FF;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    [data-testid="stSidebar"] .stButton > button,
+[data-testid="stSidebar"] .stFormSubmitButton > button {
+    display: block;
+    margin: 0 auto;  /* centers horizontally */
+    width: 90%;      /* makes them look balanced */
+}
 
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         border-right: 1px solid #B8D4FF;
-        min-width: 400px;
-        max-width: 450px;
+        min-width: 320px;
+        max-width: 340px;
     }
 
     .stButton > button, 
