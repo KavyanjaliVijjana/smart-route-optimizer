@@ -43,7 +43,6 @@ def get_coordinates(address):
 
 def get_osrm_route(coord1, coord2):
     """Fetches route data from OSRM for two coordinates."""
-    # OSRM expects coordinates in lon,lat format
     lon1, lat1 = coord1[1], coord1[0]
     lon2, lat2 = coord2[1], coord2[0]
     url = f"http://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
@@ -66,7 +65,7 @@ def get_osrm_route(coord1, coord2):
     return None
 
 def haversine(coord1, coord2):
-    """Calculate the distance between two lat/lon points in kilometers."""
+    """distance between two lat/lon points in kilometers."""
     R = 6371
     lat1, lon1 = math.radians(coord1[0]), math.radians(coord1[1])
     lat2, lon2 = math.radians(coord2[0]), math.radians(coord2[1])
@@ -174,23 +173,18 @@ def tsp_nearest_neighbor(G):
 # --- Streamlit UI ---
 st.set_page_config(page_title="Smart Route Optimizer", layout="wide", initial_sidebar_state="expanded")
 
-# Updated custom CSS with consistent blue theme
-# Updated custom CSS with consistent blue theme
 st.markdown("""
 <style>
-    /* General body and fonts */
     .stApp {
         background-color: #F5F9FF;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
-    /* Sidebar styling */
+
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         border-right: 1px solid #B8D4FF;
     }
-    
-    /* All buttons styling */
+
     .stButton > button, 
     .stDownloadButton > button,
     .stFormSubmitButton > button,
@@ -231,7 +225,6 @@ st.markdown("""
         color: white !important;
     }
 
-    /* Ensure button text is visible */
     .stButton > button div,
     .stDownloadButton > button div,
     .stFormSubmitButton > button div,
@@ -240,7 +233,6 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Secondary button style (e.g., Clear Route) */
     .stButton > button[kind="secondary"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         color: #2A66C8 !important;
@@ -255,7 +247,6 @@ st.markdown("""
         border-color: #98C0FF;
     }
 
-    /* Form button container */
     div[data-testid="stForm"] {
         border: 1px solid #D4E5FF;
         border-radius: 10px;
@@ -263,69 +254,58 @@ st.markdown("""
         background-color: #F0F7FF;
         margin-bottom: 15px;
     }
-    
-    /* Form submit buttons */
+
     div[data-testid="stForm"] button {
         margin: 5px 0;
     }
-    
-    /* Column layout for form buttons */
+
     div[data-testid="column"] {
         padding: 0 5px;
     }
 
-    /* Radio button container */
-/* --- Radio button container --- */
-.stRadio > div {
-    background-color: #F8FAFC;
-    padding: 15px;
-    border-radius: 12px;
-    border: 1px solid #E2E8F0;
-}
+    .stRadio > div {
+        background-color: #F8FAFC;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #E2E8F0;
+    }
+    
+    .stRadio [role="radiogroup"] label > div:first-child {
+        border: 2px solid #94A3B8;
+        background: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        transition: all 0.2s ease;
+    }
 
-/* --- Radio button circle --- */
-.stRadio [role="radiogroup"] label > div:first-child {
-    border: 2px solid #94A3B8; /* neutral gray border */
-    background: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    transition: all 0.2s ease;
-}
+    .stRadio [role="radiogroup"] label:hover > div:first-child {
+        border-color: #2563EB;
+        box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+    }
 
-/* --- Hover effect for circle --- */
-.stRadio [role="radiogroup"] label:hover > div:first-child {
-    border-color: #2563EB; /* subtle blue hover */
-    box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
-}
-
-/* --- Checked state --- */
-.stRadio [role="radiogroup"] label > div:first-child::before {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 10px;
-    margin: 2px auto;
-    border-radius: 50%;
-    background-color: #2563EB; /* professional blue */
-}
-
-/* --- Label text --- */
-.stRadio label {
-    color: #334155; /* dark slate gray for readability */
-    font-weight: 500;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-/* --- Label text when checked --- */
-.stRadio [role="radiogroup"] label:has(input[type="radio"]:checked) {
-    color: #1E3A8A; /* deep blue for selected */
-    font-weight: 600;
-}
-
-
+    .stRadio [role="radiogroup"] label > div:first-child::before {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 2px auto;
+        border-radius: 50%;
+        background-color: #2563EB; /* professional blue */
+    }
+    
+    .stRadio label {
+        color: #334155; 
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    
+    .stRadio [role="radiogroup"] label:has(input[type="radio"]:checked) {
+        color: #1E3A8A;
+        font-weight: 600;
+    }
     
     /* Checkbox */
     .stCheckbox > div {
@@ -335,7 +315,6 @@ st.markdown("""
         border: 1px solid #D4E5FF;
     }
     
-    /* Metric card styling */
     [data-testid="stMetric"] {
         background: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
         border: 1px solid #B8D4FF;
@@ -351,8 +330,7 @@ st.markdown("""
     [data-testid="stMetricLabel"] {
         color: #4A86E8;
     }
-    
-    /* Headers */
+
     h1 { 
         color: #2A66C8; 
         border-bottom: 2px solid #B8D4FF;
@@ -368,25 +346,21 @@ st.markdown("""
     h3 { 
         color: #4A86E8; 
     }
-    
-    /* Info box */
+
     .stAlert {
         background-color: #E6F0FF;
         border: 1px solid #B8D4FF;
         color: #2A66C8;
     }
-    
-    /* Success box */
+
     .stAlert [data-testid="stMarkdownContainer"] {
         color: #2A66C8;
     }
-    
-    /* Divider */
+
     hr {
         border-color: #D4E5FF;
     }
-    
-    /* Text input */
+
     .stTextInput input {
         background-color: #F0F7FF;
         border: 1px solid #D4E5FF;
@@ -480,14 +454,12 @@ if st.session_state.results:
     path_indices = results["path"]
     
     result_map = folium.Map(location=st.session_state.coords[0], zoom_start=12, tiles=map_tile)
-    
-    # Draw the detailed route paths
+
     for i in range(len(path_indices) - 1):
         u, v = path_indices[i], path_indices[i+1]
         if G.has_edge(u,v) and 'geometry' in G[u][v]:
             folium.PolyLine(G[u][v]['geometry'], color="#2563EB", weight=5, opacity=0.8).add_to(result_map)
 
-    # Add numbered markers for each stop
     for i, node_idx in enumerate(path_indices):
         if i == len(path_indices) - 1 and not algorithm.startswith('TSP'): continue
         coord = st.session_state.coords[node_idx]
