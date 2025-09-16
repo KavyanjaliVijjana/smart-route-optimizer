@@ -10,10 +10,7 @@ import requests
 import random
 import json
 
-# --- Functions & Classes ---
-
 class Node:
-    """A node class for A* Pathfinding."""
     def __init__(self, parent=None, position=None):
         self.parent = parent
         self.position = position
@@ -31,7 +28,6 @@ class Node:
         return hash(self.position)
 
 def get_coordinates(address):
-    """Geocodes an address to latitude and longitude, requesting English names."""
     try:
         geolocator = Nominatim(user_agent="smart_route_optimizer")
         location = geolocator.geocode(address, timeout=10, language='en')
@@ -42,7 +38,6 @@ def get_coordinates(address):
     return None
 
 def get_osrm_route(coord1, coord2):
-    """Fetches route data from OSRM for two coordinates."""
     lon1, lat1 = coord1[1], coord1[0]
     lon2, lat2 = coord2[1], coord2[0]
     url = f"http://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
@@ -52,7 +47,6 @@ def get_osrm_route(coord1, coord2):
         data = response.json()
         if data['routes']:
             route = data['routes'][0]
-            # OSRM returns geometry in [lon, lat], convert to [lat, lon] for Folium
             geometry = [[point[1], point[0]] for point in route['geometry']['coordinates']]
             return {
                 "distance": route['distance'] / 1000,  # in km
@@ -65,7 +59,6 @@ def get_osrm_route(coord1, coord2):
     return None
 
 def haversine(coord1, coord2):
-    """distance between two lat/lon points in kilometers."""
     R = 6371
     lat1, lon1 = math.radians(coord1[0]), math.radians(coord1[1])
     lat2, lon2 = math.radians(coord2[0]), math.radians(coord2[1])
@@ -76,7 +69,6 @@ def haversine(coord1, coord2):
     return R * c
 
 def create_graph(coords, use_osrm=False, optimize_by='Distance', add_traffic=False):
-    """Creates a graph from coordinates using either Haversine or OSRM."""
     G = nx.Graph()
     num_coords = len(coords)
     for i in range(num_coords):
@@ -170,7 +162,6 @@ def tsp_nearest_neighbor(G):
     path.append(start_node)
     return path, total_weight
 
-# --- Streamlit UI ---
 st.set_page_config(page_title="Smart Route Optimizer", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
@@ -180,15 +171,11 @@ st.markdown("""
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Sidebar styling */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         border-right: 1px solid #B8D4FF;
-        min-width: 320px;
-        max-width: 340px;
     }
-
-    /* Slim, consistent button styling */
+    
     .stButton > button, 
     .stDownloadButton > button,
     .stFormSubmitButton > button,
@@ -199,87 +186,185 @@ st.markdown("""
         border-radius: 6px;
         font-weight: 600;
         font-size: 13px;
-        padding: 6px 10px;   /* reduced padding = slimmer buttons */
-        width: auto;         /* let button size fit text */
-        min-width: 120px;    /* keep consistent width */
-        max-width: 160px;
+        padding: 6px 12px;    
+        width: 90%;           
         transition: all 0.3s ease;
-        box-shadow: 0 1px 3px rgba(74, 134, 232, 0.3);
-        margin: 6px auto;    /* center buttons */
-        display: block;
+        box-shadow: 0 2px 4px rgba(74, 134, 232, 0.3);
+        margin: 6px auto;    
         text-align: center;
+        height: 34px;          
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-
-    /* Hover effect */
+    
     .stButton > button:hover, 
     .stDownloadButton > button:hover,
     .stFormSubmitButton > button:hover,
     div[data-testid="stForm"] button:hover {
         background: linear-gradient(180deg, #3A76D8 0%, #2A66C8 100%);
-        box-shadow: 0 3px 6px rgba(74, 134, 232, 0.4);
+        box-shadow: 0 4px 8px rgba(74, 134, 232, 0.4);
+        color: white !important;
+    }
+    
+    .stButton > button:active, 
+    .stDownloadButton > button:active,
+    .stFormSubmitButton > button:active,
+    div[data-testid="stForm"] button:active {
+        box-shadow: 0 1px 2px rgba(74, 134, 232, 0.3);
+        color: white !important;
     }
 
-    /* Secondary buttons */
+    .stButton > button div,
+    .stDownloadButton > button div,
+    .stFormSubmitButton > button div,
+    div[data-testid="stForm"] button div {
+        color: white !important;
+        font-weight: 600;
+    }
+
     .stButton > button[kind="secondary"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         color: #2A66C8 !important;
         border: 1px solid #B8D4FF;
         border-radius: 6px;
         font-weight: 600;
+        height: 34px;        
+        width: 90%;
+        margin: 6px auto;
     }
+    
     .stButton > button[kind="secondary"]:hover {
         background: linear-gradient(180deg, #D4E5FF 0%, #C2D5FF 100%);
         color: #1A56B8 !important;
         border-color: #98C0FF;
     }
 
-    /* Form container */
     div[data-testid="stForm"] {
         border: 1px solid #D4E5FF;
         border-radius: 10px;
         padding: 15px;
         background-color: #F0F7FF;
         margin-bottom: 15px;
-        text-align: center; /* center form content */
     }
 
-    /* Inputs */
-    .stTextInput input {
-        background-color: #F0F7FF;
-        border: 1px solid #D4E5FF;
-        border-radius: 6px;
-        padding: 6px 10px;
-    }
-    .stTextInput input:focus {
-        border-color: #4A86E8;
-        box-shadow: 0 0 0 1px #4A86E8;
+    div[data-testid="stForm"] button {
+        margin: 5px 0;
     }
 
-    /* Radio buttons */
+    div[data-testid="column"] {
+        padding: 0 5px;
+    }
+
     .stRadio > div {
         background-color: #F8FAFC;
-        padding: 12px;
-        border-radius: 10px;
+        padding: 15px;
+        border-radius: 12px;
         border: 1px solid #E2E8F0;
     }
 
-    /* Metrics */
+    .stRadio [role="radiogroup"] label > div:first-child {
+    border: 2px solid #94A3B8;
+    background: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+    }
+
+    .stRadio [role="radiogroup"] label:hover > div:first-child {
+        border-color: #2563EB;
+        box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+    }
+
+    .stRadio [role="radiogroup"] label > div:first-child::before {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 2px auto;
+        border-radius: 50%;
+        background-color: #2563EB;
+    }
+
+    .stRadio label {
+        color: #334155;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+    .stRadio [role="radiogroup"] label:has(input[type="radio"]:checked) {
+        color: #1E3A8A; 
+        font-weight: 600;
+    }
+
+    .stCheckbox > div {
+        background-color: #E6F0FF;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #D4E5FF;
+    }
+
     [data-testid="stMetric"] {
         background: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
         border: 1px solid #B8D4FF;
         border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 3px 5px rgba(74, 134, 232, 0.1);
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(74, 134, 232, 0.1);
     }
-    [data-testid="stMetricValue"] { color: #2A66C8; }
-    [data-testid="stMetricLabel"] { color: #4A86E8; }
+    
+    [data-testid="stMetricValue"] {
+        color: #2A66C8;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #4A86E8;
+    }
 
-    /* Headers */
-    h1 { color: #2A66C8; border-bottom: 2px solid #B8D4FF; padding-bottom: 8px; }
-    h2 { color: #3A76D8; border-bottom: 2px solid #D4E5FF; padding-bottom: 6px; }
-    h3 { color: #4A86E8; }
+    h1 { 
+        color: #2A66C8; 
+        border-bottom: 2px solid #B8D4FF;
+        padding-bottom: 10px;
+    }
+    
+    h2 { 
+        color: #3A76D8; 
+        border-bottom: 2px solid #D4E5FF;
+        padding-bottom: 8px;
+    }
+    
+    h3 { 
+        color: #4A86E8; 
+    }
+
+    .stAlert {
+        background-color: #E6F0FF;
+        border: 1px solid #B8D4FF;
+        color: #2A66C8;
+    }
+
+    .stAlert [data-testid="stMarkdownContainer"] {
+        color: #2A66C8;
+    }
+
+    hr {
+        border-color: #D4E5FF;
+    }
+
+    .stTextInput input {
+        background-color: #F0F7FF;
+        border: 1px solid #D4E5FF;
+        border-radius: 6px;
+        padding: 8px 12px;
+    }
+    
+    .stTextInput input:focus {
+        border-color: #4A86E8;
+        box-shadow: 0 0 0 1px #4A86E8;
+    }
 </style>
-
 """, unsafe_allow_html=True)
 
 
