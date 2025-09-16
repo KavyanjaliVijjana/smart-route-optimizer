@@ -179,13 +179,8 @@ st.markdown("""
         background-color: #F5F9FF;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    [data-testid="stSidebar"] .stButton > button,
-[data-testid="stSidebar"] .stFormSubmitButton > button {
-    display: block;
-    margin: 0 auto;  /* centers horizontally */
-    width: 90%;      /* makes them look balanced */
-}
 
+    /* Sidebar styling */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         border-right: 1px solid #B8D4FF;
@@ -193,6 +188,7 @@ st.markdown("""
         max-width: 340px;
     }
 
+    /* Slim, consistent button styling */
     .stButton > button, 
     .stDownloadButton > button,
     .stFormSubmitButton > button,
@@ -200,187 +196,90 @@ st.markdown("""
         background: linear-gradient(180deg, #4A86E8 0%, #3A76D8 100%);
         color: white !important;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         font-weight: 600;
-        font-size: 14px;
-        padding: 10px 15px;
-        width: 100%;
+        font-size: 13px;
+        padding: 6px 10px;   /* reduced padding = slimmer buttons */
+        width: auto;         /* let button size fit text */
+        min-width: 120px;    /* keep consistent width */
+        max-width: 160px;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(74, 134, 232, 0.3);
-        margin-top: 10px;
+        box-shadow: 0 1px 3px rgba(74, 134, 232, 0.3);
+        margin: 6px auto;    /* center buttons */
+        display: block;
         text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: auto;
-        min-height: 40px;
     }
-    
+
+    /* Hover effect */
     .stButton > button:hover, 
     .stDownloadButton > button:hover,
     .stFormSubmitButton > button:hover,
     div[data-testid="stForm"] button:hover {
         background: linear-gradient(180deg, #3A76D8 0%, #2A66C8 100%);
-        box-shadow: 0 4px 8px rgba(74, 134, 232, 0.4);
-        color: white !important;
-    }
-    
-    .stButton > button:active, 
-    .stDownloadButton > button:active,
-    .stFormSubmitButton > button:active,
-    div[data-testid="stForm"] button:active {
-        box-shadow: 0 1px 2px rgba(74, 134, 232, 0.3);
-        color: white !important;
+        box-shadow: 0 3px 6px rgba(74, 134, 232, 0.4);
     }
 
-    .stButton > button div,
-    .stDownloadButton > button div,
-    .stFormSubmitButton > button div,
-    div[data-testid="stForm"] button div {
-        color: white !important;
-        font-weight: 600;
-    }
-
+    /* Secondary buttons */
     .stButton > button[kind="secondary"] {
         background: linear-gradient(180deg, #E6F0FF 0%, #D4E5FF 100%);
         color: #2A66C8 !important;
         border: 1px solid #B8D4FF;
-        border-radius: 8px;
+        border-radius: 6px;
         font-weight: 600;
     }
-    
     .stButton > button[kind="secondary"]:hover {
         background: linear-gradient(180deg, #D4E5FF 0%, #C2D5FF 100%);
         color: #1A56B8 !important;
         border-color: #98C0FF;
     }
 
+    /* Form container */
     div[data-testid="stForm"] {
         border: 1px solid #D4E5FF;
         border-radius: 10px;
         padding: 15px;
         background-color: #F0F7FF;
         margin-bottom: 15px;
+        text-align: center; /* center form content */
     }
 
-    div[data-testid="stForm"] button {
-        margin: 5px 0;
-    }
-
-    div[data-testid="column"] {
-        padding: 0 5px;
-    }
-
-    .stRadio > div {
-        background-color: #F8FAFC;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-    }
-    
-    .stRadio [role="radiogroup"] label > div:first-child {
-        border: 2px solid #94A3B8;
-        background: white;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        margin-right: 10px;
-        transition: all 0.2s ease;
-    }
-
-    .stRadio [role="radiogroup"] label:hover > div:first-child {
-        border-color: #2563EB;
-        box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
-    }
-
-    .stRadio [role="radiogroup"] label > div:first-child::before {
-        content: "";
-        display: block;
-        width: 10px;
-        height: 10px;
-        margin: 2px auto;
-        border-radius: 50%;
-        background-color: #2563EB; /* professional blue */
-    }
-    
-    .stRadio label {
-        color: #334155; 
-        font-weight: 500;
-        cursor: pointer;
-        transition: color 0.2s ease;
-    }
-    
-    .stRadio [role="radiogroup"] label:has(input[type="radio"]:checked) {
-        color: #1E3A8A;
-        font-weight: 600;
-    }
-    
-    /* Checkbox */
-    .stCheckbox > div {
-        background-color: #E6F0FF;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #D4E5FF;
-    }
-    
-    [data-testid="stMetric"] {
-        background: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
-        border: 1px solid #B8D4FF;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(74, 134, 232, 0.1);
-    }
-    
-    [data-testid="stMetricValue"] {
-        color: #2A66C8;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        color: #4A86E8;
-    }
-
-    h1 { 
-        color: #2A66C8; 
-        border-bottom: 2px solid #B8D4FF;
-        padding-bottom: 10px;
-    }
-    
-    h2 { 
-        color: #3A76D8; 
-        border-bottom: 2px solid #D4E5FF;
-        padding-bottom: 8px;
-    }
-    
-    h3 { 
-        color: #4A86E8; 
-    }
-
-    .stAlert {
-        background-color: #E6F0FF;
-        border: 1px solid #B8D4FF;
-        color: #2A66C8;
-    }
-
-    .stAlert [data-testid="stMarkdownContainer"] {
-        color: #2A66C8;
-    }
-
-    hr {
-        border-color: #D4E5FF;
-    }
-
+    /* Inputs */
     .stTextInput input {
         background-color: #F0F7FF;
         border: 1px solid #D4E5FF;
         border-radius: 6px;
-        padding: 8px 12px;
+        padding: 6px 10px;
     }
-    
     .stTextInput input:focus {
         border-color: #4A86E8;
         box-shadow: 0 0 0 1px #4A86E8;
     }
+
+    /* Radio buttons */
+    .stRadio > div {
+        background-color: #F8FAFC;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #E2E8F0;
+    }
+
+    /* Metrics */
+    [data-testid="stMetric"] {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
+        border: 1px solid #B8D4FF;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 3px 5px rgba(74, 134, 232, 0.1);
+    }
+    [data-testid="stMetricValue"] { color: #2A66C8; }
+    [data-testid="stMetricLabel"] { color: #4A86E8; }
+
+    /* Headers */
+    h1 { color: #2A66C8; border-bottom: 2px solid #B8D4FF; padding-bottom: 8px; }
+    h2 { color: #3A76D8; border-bottom: 2px solid #D4E5FF; padding-bottom: 6px; }
+    h3 { color: #4A86E8; }
 </style>
+
 """, unsafe_allow_html=True)
 
 
